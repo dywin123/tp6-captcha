@@ -1,13 +1,4 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2015 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: yunwuxin <448901948@qq.com>
-// +----------------------------------------------------------------------
 
 namespace think\captcha;
 
@@ -65,12 +56,10 @@ class Captcha
      * 架构方法 设置参数
      * @access public
      * @param Config  $config
-     * @param Session $session
      */
-    public function __construct(Config $config, Session $session)
+    public function __construct(Config $config)
     {
         $this->config  = $config;
-        $this->session = $session;
     }
 
     /**

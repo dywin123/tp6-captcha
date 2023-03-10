@@ -24,9 +24,9 @@
             "services": [
                 "think\\captcha\\CaptchaService"
             ],
-            "config":{
+            "config": {
                 "captcha": "src/config.php"
-            }            
+            }
         }
     }
 }
