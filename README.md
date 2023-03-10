@@ -3,7 +3,7 @@
 thinkphp6 验证码类库
 
 ## 安装
-> composer require dysix/think-captcha
+> composer require dywin123/think-captcha
 
 
 
