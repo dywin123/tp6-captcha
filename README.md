@@ -9,49 +9,71 @@ thinkphp6 验证码类库
 
 ## 使用
 
-### 在控制器中输出验证码
+### 注册路由
 
-在控制器的操作方法中使用
+首先在你应用的路由定义文件中，注册一个验证码路由规则
 
+~~~php
+//验证码接口
+Route::get('captcha', 'Login/captcha');
+//验证码图形展示接口
+Route::get('captcha/:id', 'Login/showCaptcha');
 ~~~
-public function captcha($id = '')
+
+### 控制器输出验证码信息
+
+首先请求获取验证码信息
+
+~~~php
+    //获取验证码信息
+    public function captcha()
+    {
+        //验证码唯一标识
+        $uniqid = uniqid((string)mt_rand(100000, 999999));
+        $src = (string)\think\facade\Route::buildUrl('/manage/captcha/' . $uniqid)->domain(true);
+        $data = [
+            'src'    => $src,
+            'uniqid' => $uniqid,
+        ];
+        $this->result(200, '获取成功', $data);
+    }
+~~~
+
+获取到的验证码数据
+
+```json
 {
-	return captcha($id);
+	"src": "http://domain/captcha/720807640afff8834bd",
+	"uniqid": "720807640afff8834bd"
 }
-~~~
-然后注册对应的路由来输出验证码
+```
 
+前端图片使用返回的链接展示验证码图片
 
-### 模板里输出验证码
+```html
+<img src="http://domain/captcha/720807640afff8834bd">
+```
 
-首先要在你应用的路由定义文件中，注册一个验证码路由规则。
+控制器输出验证码图片
 
+~~~php
+	//获取验证码图片
+    public function showCaptcha($id)
+    {
+        return captcha($id);
+    }
 ~~~
-\think\facade\Route::get('captcha/[:id]', "\\think\\captcha\\CaptchaController@index");
-~~~
-
-然后就可以在模板文件中使用
-~~~
-<div>{:captcha_img()}</div>
-~~~
-或者
-~~~
-<div><img src="{:captcha_src()}" alt="captcha" /></div>
-~~~
-> 上面两种的最终效果是一样的
-
-
 ### 控制器里验证
 
-使用TP的内置验证功能即可
-~~~
-$this->validate($data,[
-    'captcha|验证码'=>'require|captcha'
-]);
-~~~
-或者手动验证
-~~~
-if(!captcha_check($captcha)){
- //验证失败
-};
+需将`验证码图片内容`与`uniqid`一起提交
+
+~~~php
+	//登录
+    public function index()
+    {
+    	$input = $this->request->post('', null, ['trim']);
+    	if(!captcha_check($input['captcha'], $input['uniqid'])){
+            $this->result(400, '验证码错误');
+        }
+    }
 ~~~
