@@ -1,6 +1,6 @@
 # think-captcha
 
-thinkphp6 验证码类库
+thinkphp6 验证码类库 ，适用于前后端分离模式，api接口验证码使用场景
 
 ## 安装
 > composer require dysix/think-captcha
