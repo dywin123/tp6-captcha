@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "think\\captcha\\": "src/"
+            "dysix\\captcha\\": "src/"
         },
         "files": [
             "src/helper.php"
@@ -22,7 +22,7 @@
     "extra": {
         "think": {
             "services": [
-                "think\\captcha\\CaptchaService"
+                "dysix\\captcha\\CaptchaService"
             ],
             "config": {
                 "captcha": "src/config.php"
