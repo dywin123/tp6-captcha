@@ -15,7 +15,9 @@ thinkphp6 验证码类库 ，适用于前后端分离模式，api接口验证码
 
 ~~~php
 //验证码接口
-Route::get('captcha', 'Login/captcha');
+Route::get('captcha', function(){
+    return captcha($id);
+});
 //验证码图形展示接口
 Route::get('captcha/:id', 'Login/showCaptcha');
 ~~~
@@ -30,12 +32,12 @@ Route::get('captcha/:id', 'Login/showCaptcha');
     {
         //验证码唯一标识
         $uniqid = uniqid((string)mt_rand(100000, 999999));
-        $src = (string)\think\facade\Route::buildUrl('/manage/captcha/' . $uniqid)->domain(true);
+        $src = (string)\think\facade\Route::buildUrl('/captcha/' . $uniqid)->domain(true);
         $data = [
             'src'    => $src,
             'uniqid' => $uniqid,
         ];
-        $this->result(200, '获取成功', $data);
+        return json($data);
     }
 ~~~
 
@@ -54,15 +56,6 @@ Route::get('captcha/:id', 'Login/showCaptcha');
 <img src="http://domain/captcha/720807640afff8834bd">
 ```
 
-控制器输出验证码图片
-
-~~~php
-	//获取验证码图片
-    public function showCaptcha($id)
-    {
-        return captcha($id);
-    }
-~~~
 ### 控制器里验证
 
 需将`验证码图片内容`与`uniqid`一起提交
@@ -73,7 +66,7 @@ Route::get('captcha/:id', 'Login/showCaptcha');
     {
     	$input = $this->request->post('', null, ['trim']);
     	if(!captcha_check($input['captcha'], $input['uniqid'])){
-            $this->result(400, '验证码错误');
+            return json(['code' => 400, 'msh' => '验证码错误');
         }
     }
 ~~~
