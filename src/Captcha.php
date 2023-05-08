@@ -115,7 +115,8 @@ class Captcha
 
         $hash = password_hash($key, PASSWORD_BCRYPT, ['cost' => 10]);
 
-        Cache::set('captcha_'.$id, [
+        $cacheKey = $this->getCacheKey($id);
+        Cache::set($cacheKey, [
             'key'   => $hash
         ], 60);
 
@@ -123,6 +124,16 @@ class Captcha
             'value' => $bag,
             'key'   => $hash,
         ];
+    }
+
+    /**
+     * 获取验证码缓存key
+     * @param string $id
+     * @return string
+     */
+    private function getCacheKey($id): string
+    {
+        return 'captcha:' . $id;
     }
 
     /**
@@ -136,8 +147,9 @@ class Captcha
         /*if (!$this->session->has('captcha')) {
             return false;
         }*/
-        $cache = Cache::get('captcha_'.$id);
-        if($cache === null){
+        $cacheKey = $this->getCacheKey($id);
+        $cache = Cache::get($cacheKey);
+        if ($cache === null) {
             return false;
         }
         $key = $cache['key'];
@@ -147,7 +159,7 @@ class Captcha
         $res = password_verify($code, $key);
 
         if ($res) {
-            Cache::delete('captcha_'.$id);
+            Cache::delete($cacheKey);
         }
 
         return $res;
