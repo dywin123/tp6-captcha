@@ -58,7 +58,7 @@ Route::get('captcha', function (){
     {
     	$input = $this->request->post('', null, ['trim']);
     	if(!captcha_check($input['captcha'], $input['uniqid'])){
-            return json(['code' => 400, 'msh' => '验证码错误');
+            return json(['code' => 400, 'msg' => '验证码错误');
         }
     }
 ~~~
