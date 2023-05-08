@@ -1,9 +1,9 @@
-# think-captcha
+# tp6-captcha
 
 thinkphp6 验证码类库 ，适用于前后端分离模式，api接口验证码使用场景
 
 ## 安装
-> composer require dysix/think-captcha
+> composer require dysix/tp6-captcha
 
 
 
@@ -11,25 +11,15 @@ thinkphp6 验证码类库 ，适用于前后端分离模式，api接口验证码
 
 ### 注册路由
 
-首先在你应用的路由定义文件中，注册一个验证码路由规则
+首先在应用的路由定义文件中，注册验证码路由规则
 
 ~~~php
-//验证码接口
-Route::get('captcha', function(){
+//展示验证码图形
+Route::get('captcha/:id', function(){
     return captcha($id);
 });
-//验证码图形展示接口
-Route::get('captcha/:id', 'Login/showCaptcha');
-~~~
-
-### 控制器输出验证码信息
-
-首先请求获取验证码信息
-
-~~~php
-    //获取验证码信息
-    public function captcha()
-    {
+//验证码接口
+Route::get('captcha', function (){
         //验证码唯一标识
         $uniqid = uniqid((string)mt_rand(100000, 999999));
         $src = (string)\think\facade\Route::buildUrl('/captcha/' . $uniqid)->domain(true);
@@ -38,10 +28,12 @@ Route::get('captcha/:id', 'Login/showCaptcha');
             'uniqid' => $uniqid,
         ];
         return json($data);
-    }
+});
 ~~~
 
-获取到的验证码数据
+### 获取验证码
+
+首先请求`验证码接口`获取信息，获取到的验证码数据如图示
 
 ```json
 {
@@ -56,9 +48,9 @@ Route::get('captcha/:id', 'Login/showCaptcha');
 <img src="http://domain/captcha/720807640afff8834bd">
 ```
 
-### 控制器里验证
+### 验证
 
-需将`验证码图片内容`与`uniqid`一起提交
+需将`验证码`与`uniqid`一起提交验证
 
 ~~~php
 	//登录
