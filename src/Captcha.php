@@ -115,8 +115,7 @@ class Captcha
 
         $hash = password_hash($key, PASSWORD_BCRYPT, ['cost' => 10]);
 
-        $cacheKey = $this->getCacheKey($id);
-        Cache::set($cacheKey, [
+        Cache::set($this->getCacheKey($id), [
             'key'   => $hash
         ], 60);
 
