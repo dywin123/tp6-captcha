@@ -16,7 +16,7 @@ thinkphp6 验证码类库 ，适用于前后端分离模式，api接口验证码
 ~~~php
 //展示验证码图形
 Route::get('captcha/:id', function(){
-    return captcha($id);
+    return \Dysix\Tp6Captcha\facade\Captcha::create($id);
 });
 //验证码接口
 Route::get('captcha', function (){
@@ -57,7 +57,7 @@ Route::get('captcha', function (){
     public function index()
     {
     	$input = $this->request->post('', null, ['trim']);
-    	if(!captcha_check($input['captcha'], $input['uniqid'])){
+    	if(!\Dysix\Tp6Captcha\facade\Captcha::check($input['captcha'], $input['uniqid'])){
             return json(['code' => 400, 'msg' => '验证码错误');
         }
     }
