@@ -3,7 +3,7 @@
     "description": "tp6 前后端分离模式验证码机制",
     "type": "library",
     "require": {
-        "topthink/framework": "6.1"
+        "topthink/framework": "^6.1"
     },
     "autoload": {
         "psr-4": {
